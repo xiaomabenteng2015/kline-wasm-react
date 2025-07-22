@@ -44,6 +44,15 @@
   border: 1px solid #ccc;
 }
 
+.autoAnalyzeToggle {
+  display: flex;
+  align-items: center;
+}
+
+.autoAnalyzeToggle input {
+  margin-right: 8px;
+}
+
 .analyzeButton {
   display: block;
   margin: 20px auto;

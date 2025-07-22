@@ -14,6 +14,8 @@ export default function HomePage() {
   const [inferenceLoading, setInferenceLoading] = useState(false);
   const [useRealData, setUseRealData] = useState(true);
   const [selectedInterval, setSelectedInterval] = useState<KlineInterval>(KlineInterval.ONE_DAY);
+  const [autoAnalyze, setAutoAnalyze] = useState(true); // 是否自动分析
+  const lastKlineTimeRef = React.useRef<number | null>(null); // 用于跟踪最后一根K线的时间
 
   // 使用自定义Hook获取K线数据
   const { klineData, loading: klineLoading, error } = useKlineData({
@@ -25,6 +27,8 @@ export default function HomePage() {
 
   // 推理函数
   const handleAnalyze = async () => {
+    if (!klineData.length) return;
+
     setInferenceLoading(true);
     setResult(null);
     setSignal(null);
@@ -44,6 +48,20 @@ export default function HomePage() {
       setInferenceLoading(false);
     }
   };
+
+  // 监听K线数据变化，当有新数据时自动分析
+  React.useEffect(() => {
+    if (!klineData.length || !autoAnalyze) return;
+
+    const lastKline = klineData[klineData.length - 1];
+
+    // 如果是首次加载数据或者收到了新的K线，执行分析
+    if (lastKlineTimeRef.current === null || lastKlineTimeRef.current !== lastKline.time) {
+      console.log(`检测到新K线数据，时间: ${new Date(lastKline.time * 1000).toLocaleString()}`);
+      lastKlineTimeRef.current = lastKline.time;
+      handleAnalyze();
+    }
+  }, [klineData, autoAnalyze, handleAnalyze]);
 
   // 切换数据源
   const toggleDataSource = () => {
@@ -83,6 +101,17 @@ export default function HomePage() {
             <option value={KlineInterval.ONE_WEEK}>1周</option>
           </select>
         </div>
+
+        <div className={styles.autoAnalyzeToggle}>
+          <label>
+            <input
+              type="checkbox"
+              checked={autoAnalyze}
+              onChange={() => setAutoAnalyze(!autoAnalyze)}
+            />
+            自动分析新K线
+          </label>
+        </div>
       </div>
 
       {klineLoading ? (
@@ -99,7 +128,7 @@ export default function HomePage() {
             disabled={inferenceLoading || klineData.length === 0}
             className={styles.analyzeButton}
           >
-            {inferenceLoading ? '分析中...' : '分析K线数据'}
+            {inferenceLoading ? '分析中...' : '手动分析K线数据'}
           </button>
 
           <ResultDisplay
