@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
 import styles from '../styles/ResultDisplay.module.css';
-import { KlineData } from '../types';
+import { BinanceKline } from '../services/binanceService';
 
 interface ResultDisplayProps {
-    klineData: KlineData[];
+    klineData: BinanceKline[];
     result: number | null;
     signal: string | null;
     prob: number | null;

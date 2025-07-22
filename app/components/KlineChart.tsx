@@ -2,10 +2,10 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart, ColorType } from 'lightweight-charts';
 import styles from '../styles/KlineChart.module.css';
-import { KlineData } from '../types';
+import { BinanceKline } from '../services/binanceService';
 
 interface KlineChartProps {
-    data: KlineData[];
+    data: BinanceKline[];
 }
 
 /**
