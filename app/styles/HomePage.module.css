@@ -1,0 +1,28 @@
+.container {
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 24px;
+  color: var(--foreground);
+}
+
+.analyzeButton {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.analyzeButton:hover {
+  background-color: #45a049;
+}
+
+.analyzeButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
