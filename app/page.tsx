@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import KlineChart from './components/KlineChart';
 import ResultDisplay from './components/ResultDisplay';
-import { analyzeKlineData } from './models/inference';
+import { analyzeKlineData, initInferenceService, cleanupInferenceService } from './services/inferenceService';
 import styles from './styles/HomePage.module.css';
 import { useKlineData } from './hooks/useKlineData';
 import { KlineInterval } from './services/binanceService';
@@ -38,6 +38,39 @@ export default function HomePage() {
 
   // 推理函数已移至上方的useCallback中
 
+  // 初始化推理服务
+  const [inferenceServiceReady, setInferenceServiceReady] = React.useState(false);
+  const [inferenceServiceError, setInferenceServiceError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+
+    const initService = async () => {
+      try {
+        console.log('开始初始化推理服务...');
+        await initInferenceService();
+        if (mounted) {
+          console.log('推理服务初始化成功');
+          setInferenceServiceReady(true);
+          setInferenceServiceError(null);
+        }
+      } catch (error) {
+        console.error('推理服务初始化失败:', error);
+        if (mounted) {
+          setInferenceServiceError(error instanceof Error ? error.message : '推理服务初始化失败');
+        }
+      }
+    };
+
+    initService();
+
+    return () => {
+      mounted = false;
+      console.log('清理推理服务...');
+      cleanupInferenceService();
+    };
+  }, []);
+
   // 使用useCallback包装handleAnalyze函数，避免每次渲染都创建新函数
   const memoizedHandleAnalyze = React.useCallback(async () => {
     if (!klineData.length) return;
@@ -48,15 +81,17 @@ export default function HomePage() {
     setProb(null);
 
     try {
+      console.log('开始分析K线数据...');
       const { result: inferenceResult, signal: inferenceSignal, prob: inferenceProb } =
         await analyzeKlineData(klineData);
 
+      console.log(`分析结果: ${inferenceSignal}, 概率: ${inferenceProb}`);
       setResult(inferenceResult);
       setSignal(inferenceSignal);
       setProb(inferenceProb);
     } catch (error) {
       console.error('分析错误:', error);
-      alert(error instanceof Error ? error.message : '分析过程中发生错误');
+      // 不弹出错误提示，避免影响用户体验
     } finally {
       setInferenceLoading(false);
     }
@@ -157,7 +192,7 @@ export default function HomePage() {
         </div>
       ) : (
         <>
-          <KlineChart data={klineData} />
+          <KlineChart data={klineData} signal={signal} prob={prob} />
           <button
             onClick={memoizedHandleAnalyze}
             disabled={inferenceLoading || klineData.length === 0}

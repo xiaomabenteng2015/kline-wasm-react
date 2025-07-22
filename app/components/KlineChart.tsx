@@ -6,12 +6,14 @@ import { BinanceKline } from '../services/binanceService';
 
 interface KlineChartProps {
     data: BinanceKline[];
+    signal?: string | null;
+    prob?: number | null;
 }
 
 /**
  * K线图表组件
  */
-export default function KlineChart({ data }: KlineChartProps) {
+export default function KlineChart({ data, signal, prob }: KlineChartProps) {
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartRef = useRef<IChartApi | null>(null);
     const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -106,6 +108,38 @@ export default function KlineChart({ data }: KlineChartProps) {
             console.error('Chart update error:', error);
         }
     }, [data, autoScroll, visibleRange]);
+
+    // 更新买卖信号标记
+    useEffect(() => {
+        if (!seriesRef.current || !signal || !prob || data.length === 0) return;
+
+        try {
+            const lastKline = data[data.length - 1];
+            const markers = [];
+
+            if (signal === 'buy') {
+                markers.push({
+                    time: lastKline.time as any,
+                    position: 'belowBar',
+                    color: '#26a69a',
+                    shape: 'arrowUp',
+                    text: `买入 (${prob})`
+                });
+            } else if (signal === 'sell') {
+                markers.push({
+                    time: lastKline.time as any,
+                    position: 'aboveBar',
+                    color: '#ef5350',
+                    shape: 'arrowDown',
+                    text: `卖出 (${prob})`
+                });
+            }
+
+            seriesRef.current.setMarkers(markers);
+        } catch (error) {
+            console.error('设置标记错误:', error);
+        }
+    }, [signal, prob, data]);
 
     return (
         <div className={styles.chartContainer}>
