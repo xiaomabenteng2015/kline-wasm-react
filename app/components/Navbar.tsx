@@ -37,6 +37,14 @@ export default function Navbar() {
                         模型管理
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        href="/ai"
+                        className={pathname === '/ai' ? styles.active : ''}
+                    >
+                        AI助手
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
