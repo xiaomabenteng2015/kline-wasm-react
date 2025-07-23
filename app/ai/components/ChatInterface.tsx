@@ -84,17 +84,19 @@ export default function ChatInterface() {
             });
 
         } catch (error) {
-            // 移除空的助手消息并添加错误消息
-            setMessages(prev => {
-                const filtered = prev.filter(msg => msg.content.trim() !== '');
-                return [...filtered, {
-                    id: `error-${Date.now()}`,
-                    role: 'assistant',
-                    content: '抱歉，生成回复时出现了问题。系统已切换到备用模式，请重新发送消息。',
-                    timestamp: Date.now()
-                }];
-            });
+            // 更新当前助手消息为错误消息
+            setMessages(prev => prev.map(msg =>
+                msg.id === assistantMessageId
+                    ? {
+                        ...msg,
+                        content: '抱歉，生成回复时出现了问题。请检查网络连接和浏览器兼容性，然后重试。'
+                    }
+                    : msg
+            ));
             console.error('生成回复失败:', error);
+
+            // 尝试重新初始化服务（但不在这里调用，避免无限循环）
+            console.log('请刷新页面或重新加载模型以修复问题');
         } finally {
             setIsGenerating(false);
         }

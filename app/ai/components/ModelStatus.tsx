@@ -23,7 +23,7 @@ export default function ModelStatus({
                 <p className={styles.description}>
                     为了提供智能对话功能，需要加载Qwen2-1.5B模型。
                     首次加载可能需要几分钟时间，之后将缓存在浏览器中加快加载速度。
-                    如果加载失败，系统会自动切换到备用聊天服务。
+                    请确保网络连接稳定，并使用支持WebLLM的现代浏览器。
                 </p>
 
                 {error && (
@@ -67,7 +67,7 @@ export default function ModelStatus({
                         <li>支持WebGPU可获得更好性能（可选）</li>
                     </ul>
                     <p className={styles.note}>
-                        如果加载失败，系统会自动切换到备用聊天服务，确保功能可用。
+                        如果遇到问题，请尝试刷新页面或使用Chrome/Edge浏览器。
                     </p>
                 </div>
             </div>

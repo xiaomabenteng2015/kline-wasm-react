@@ -99,40 +99,14 @@ export async function generateFallbackResponse(
 
 // 检查是否应该使用备用服务
 export function shouldUseFallback(): boolean {
-  // 检查是否在浏览器环境
-  if (typeof window === 'undefined') {
+  // 强制不使用备用服务，确保总是尝试使用 WebLLM
+  console.log("强制使用 WebLLM，不切换到备用服务");
+
+  // 只在非浏览器环境下使用备用服务（服务器端渲染时）
+  if (typeof window === "undefined") {
     return true;
   }
 
-  // 检查是否为移动设备
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-  if (isMobile) {
-    console.log("移动设备，使用备用聊天服务");
-    return true;
-  }
-
-  // 检查WebGPU支持
-  if (!navigator.gpu) {
-    console.log("WebGPU不支持，使用备用聊天服务");
-    return true;
-  }
-
-  // 检查内存 - 添加类型断言
-  if ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 4) {
-    console.log("设备内存不足，使用备用聊天服务");
-    return true;
-  }
-
-  // 检查网络连接 - 添加类型断言
-  if ((navigator as any).connection) {
-    const connection = (navigator as any).connection;
-    if (connection.effectiveType === '2g' || connection.effectiveType === 'slow-2g') {
-      console.log("网络连接较慢，使用备用聊天服务");
-      return true;
-    }
-  }
-
+  // 其他所有情况都尝试使用 WebLLM
   return false;
 }

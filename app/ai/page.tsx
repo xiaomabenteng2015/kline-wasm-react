@@ -27,7 +27,7 @@ export default function AIPage() {
                 console.log('诊断结果:', diagnostics);
 
                 if (!diagnostics.environment.supported) {
-                    console.warn('当前环境不完全支持WebLLM，可能会使用备用服务');
+                    console.warn('当前环境不完全支持WebLLM');
                     console.warn('建议:', diagnostics.environment.recommendations.join(', '));
                 }
 
@@ -38,22 +38,16 @@ export default function AIPage() {
 
                 console.log('WebLLM API:', diagnostics.webllm.apis.join(', '));
 
-                // 初始化服务
-                console.log('正在初始化LLM服务...');
-                await initLLMService();
-                console.log('LLM服务初始化完成');
+                // 标记服务已初始化，但模型还未加载
                 setServiceInitialized(true);
+                setModelReady(false);
 
-                // 检查模型是否已加载
-                const loaded = await isModelLoaded();
-                console.log('模型加载状态:', loaded);
-                setModelReady(loaded);
+                console.log('环境检查完成，请点击按钮加载模型');
             } catch (err) {
-                console.error('LLM服务初始化失败:', err);
-                setError(err instanceof Error ? err.message : '初始化失败');
-                // 即使初始化失败，也设置为已初始化，因为有备用服务
+                console.error('环境检查失败:', err);
+                setError(err instanceof Error ? err.message : '环境检查失败');
                 setServiceInitialized(true);
-                setModelReady(true);
+                setModelReady(false);
             }
         };
 
@@ -82,10 +76,9 @@ export default function AIPage() {
             console.log('模型加载完成');
             setModelReady(true);
         } catch (err) {
-            console.warn('WebLLM加载失败，将使用备用聊天服务:', err);
-            // 即使WebLLM加载失败，也设置为就绪状态，因为有备用服务
-            setModelReady(true);
-            setError(null); // 不显示错误，因为备用服务可用
+            console.error('模型加载失败:', err);
+            setError(err instanceof Error ? err.message : '模型加载失败');
+            setModelReady(false);
         } finally {
             setIsLoading(false);
         }
