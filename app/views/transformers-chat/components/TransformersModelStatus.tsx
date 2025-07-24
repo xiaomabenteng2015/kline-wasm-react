@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../../styles/TransformersModelStatus.module.css';
+import styles from '../../../styles/TransformersModelStatus.module.css';
 
 interface TransformersModelStatusProps {
     isLoading: boolean;
@@ -9,11 +9,11 @@ interface TransformersModelStatusProps {
     onRetry: () => void;
 }
 
-export default function TransformersModelStatus({ 
-    isLoading, 
-    progress, 
-    error, 
-    onRetry 
+export default function TransformersModelStatus({
+    isLoading,
+    progress,
+    error,
+    onRetry
 }: TransformersModelStatusProps) {
     if (error) {
         return (
@@ -34,7 +34,7 @@ export default function TransformersModelStatus({
             <div className={styles.loadingCard}>
                 <h3>正在加载 Transformers.js 模型...</h3>
                 <div className={styles.progressContainer}>
-                    <div 
+                    <div
                         className={styles.progressBar}
                         style={{ width: `${progress}%` }}
                     />

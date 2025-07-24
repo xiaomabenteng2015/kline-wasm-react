@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from '../../styles/OnnxModelStatus.module.css';
+import styles from '../../../styles/OnnxModelStatus.module.css';
 
 interface OnnxModelStatusProps {
   isLoading: boolean;
@@ -21,9 +21,9 @@ export default function OnnxModelStatus({
         <div className={styles.icon}>
           🚀
         </div>
-        
+
         <h2 className={styles.title}>ONNX AI 模型</h2>
-        
+
         <p className={styles.description}>
           基于 ONNX Runtime 的高性能推理引擎，提供更快的响应速度和更低的资源占用。
           首次加载需要下载模型文件，之后将缓存在浏览器中。

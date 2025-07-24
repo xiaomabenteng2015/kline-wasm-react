@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from '../../styles/ChatInterface.module.css';
+import styles from '../../../styles/ChatInterface.module.css';
 import { Message } from './ChatInterface';
 
 interface MessageListProps {

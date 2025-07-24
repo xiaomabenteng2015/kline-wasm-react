@@ -23,40 +23,40 @@ export default function Navbar() {
                 </li>
                 <li>
                     <Link
-                        href="/train"
-                        className={pathname === '/train' ? styles.active : ''}
+                        href="/views/train"
+                        className={pathname === '/views/train' ? styles.active : ''}
                     >
                         模型训练
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="/models"
-                        className={pathname === '/models' ? styles.active : ''}
+                        href="/views/models"
+                        className={pathname === '/views/models' ? styles.active : ''}
                     >
                         模型管理
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="/ai"
-                        className={pathname === '/ai' ? styles.active : ''}
+                        href="/views/ai"
+                        className={pathname === '/views/ai' ? styles.active : ''}
                     >
                         AI助手
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="/onnx-chat"
-                        className={pathname === '/onnx-chat' ? styles.active : ''}
+                        href="/views/onnx-chat"
+                        className={pathname === '/views/onnx-chat' ? styles.active : ''}
                     >
                         ONNX聊天
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="/transformers-chat"
-                        className={pathname === '/transformers-chat' ? styles.active : ''}
+                        href="/views/transformers-chat"
+                        className={pathname === '/views/transformers-chat' ? styles.active : ''}
                     >
                         Transformers聊天
                     </Link>

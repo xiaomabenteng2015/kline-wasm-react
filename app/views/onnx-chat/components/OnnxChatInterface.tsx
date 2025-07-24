@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../../styles/OnnxChatInterface.module.css';
+import styles from '../../../styles/OnnxChatInterface.module.css';
 import MessageBubble from '../components/MessageBubble';
-import { generateOnnxResponse } from '../../services/onnxService';
-import { OnnxMessage } from '../../types/onnx';
+import { generateOnnxResponse } from '../../../services/onnxService';
+import { OnnxMessage } from '../../../types/onnx';
 
 export default function OnnxChatInterface() {
     const [messages, setMessages] = useState<OnnxMessage[]>([]);

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { generateTransformersResponse } from '../../services/transformersService';
-import styles from '../../styles/TransformersChatInterface.module.css';
+import { generateTransformersResponse } from '../../../services/transformersService';
+import styles from '../../../styles/TransformersChatInterface.module.css';
 
 interface Message {
     id: string;
@@ -61,9 +61,9 @@ export default function TransformersChatInterface() {
                 userMessage.content,
                 history,
                 (chunk: string) => {
-                    setMessages(prev => 
-                        prev.map(msg => 
-                            msg.id === assistantMessage.id 
+                    setMessages(prev =>
+                        prev.map(msg =>
+                            msg.id === assistantMessage.id
                                 ? { ...msg, content: msg.content + chunk }
                                 : msg
                         )
@@ -72,9 +72,9 @@ export default function TransformersChatInterface() {
             );
         } catch (error) {
             console.error('Error generating response:', error);
-            setMessages(prev => 
-                prev.map(msg => 
-                    msg.id === assistantMessage.id 
+            setMessages(prev =>
+                prev.map(msg =>
+                    msg.id === assistantMessage.id
                         ? { ...msg, content: '抱歉，生成回复时出现错误。' }
                         : msg
                 )
@@ -99,7 +99,7 @@ export default function TransformersChatInterface() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2>Transformers.js 聊天</h2>
-                <button 
+                <button
                     onClick={clearConversation}
                     className={styles.clearButton}
                     disabled={messages.length === 0}
@@ -116,8 +116,8 @@ export default function TransformersChatInterface() {
                     </div>
                 ) : (
                     messages.map((message) => (
-                        <div 
-                            key={message.id} 
+                        <div
+                            key={message.id}
                             className={`${styles.message} ${styles[message.role]}`}
                         >
                             <div className={styles.messageContent}>

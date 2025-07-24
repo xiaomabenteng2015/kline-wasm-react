@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/AIPage.module.css';
+import styles from '../../styles/AIPage.module.css';
 import ChatInterface from './components/ChatInterface';
 import ModelStatus from './components/ModelStatus';
 import ErrorBoundary from './components/ErrorBoundary';
-import { initLLMService, isModelLoaded, loadModel } from '../services/llmService';
-import { runDiagnostics } from '../services/diagnostics';
+import { initLLMService, isModelLoaded, loadModel } from '../../services/llmService';
+import { runDiagnostics } from '../../services/diagnostics';
 
 // 调试信息
 console.log('AI页面加载中...');

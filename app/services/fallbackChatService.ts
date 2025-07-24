@@ -1,7 +1,7 @@
 /**
  * 备用聊天服务 - 当WebLLM不可用时使用的简单聊天机器人
  */
-import { Message } from "../ai/components/ChatInterface";
+import { Message } from "../views/ai/components/ChatInterface";
 
 // 预定义的回复模板
 const RESPONSES = {

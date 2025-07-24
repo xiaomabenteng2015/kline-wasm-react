@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/OnnxChatPage.module.css';
+import styles from '../../styles/OnnxChatPage.module.css';
 import OnnxChatInterface from './components/OnnxChatInterface';
 import OnnxModelStatus from './components/OnnxModelStatus';
 import ErrorBoundary from '../ai/components/ErrorBoundary';
-import { initOnnxService, isOnnxServiceReady } from '../services/onnxService';
+import { initOnnxService, isOnnxServiceReady } from '../../services/onnxService';
 
 export default function OnnxChatPage() {
     const [isLoading, setIsLoading] = useState(false);

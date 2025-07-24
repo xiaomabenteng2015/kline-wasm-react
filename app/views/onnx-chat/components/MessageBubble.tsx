@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import styles from '../../styles/MessageBubble.module.css';
-import { OnnxMessage } from '../../types/onnx';
+import styles from '../../../styles/MessageBubble.module.css';
+import { OnnxMessage } from '../../../types/onnx';
 
 interface MessageBubbleProps {
   message: OnnxMessage;
@@ -30,7 +30,7 @@ export default function MessageBubble({ message, isGenerating = false }: Message
       <div className={styles.avatar}>
         {message.role === 'user' ? '👤' : '🤖'}
       </div>
-      
+
       <div className={styles.messageContent}>
         <div className={styles.messageHeader}>
           <span className={styles.sender}>
@@ -40,12 +40,12 @@ export default function MessageBubble({ message, isGenerating = false }: Message
             {formatTime(message.timestamp)}
           </span>
         </div>
-        
-        <div 
+
+        <div
           className={`${styles.messageText} ${isGenerating ? styles.generating : ''}`}
           dangerouslySetInnerHTML={{ __html: formatContent(message.content) }}
         />
-        
+
         {isGenerating && (
           <div className={styles.cursor}>|</div>
         )}

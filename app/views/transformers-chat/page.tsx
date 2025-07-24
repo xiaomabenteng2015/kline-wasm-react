@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { initTransformersService, isTransformersServiceReady } from '../services/transformersService';
+import { initTransformersService, isTransformersServiceReady } from '../../services/transformersService';
 import TransformersModelStatus from './components/TransformersModelStatus';
 import TransformersChatInterface from './components/TransformersChatInterface';
-import styles from '../styles/TransformersChatPage.module.css';
+import styles from '../../styles/TransformersChatPage.module.css';
 
 export default function TransformersChatPage() {
     const [isLoading, setIsLoading] = useState(false);

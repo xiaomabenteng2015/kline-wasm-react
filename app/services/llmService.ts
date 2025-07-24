@@ -1,7 +1,7 @@
 /**
  * LLM服务 - 管理WebLLM模型加载和推理
  */
-import { Message } from "../ai/components/ChatInterface";
+import { Message } from "../views/ai/components/ChatInterface";
 
 // 模型配置
 const MODEL_CONFIG = {
@@ -45,8 +45,7 @@ export async function initLLMService(): Promise<void> {
       webllm = await webllmModule.CreateMLCEngine(MODEL_CONFIG.modelId, {
         initProgressCallback: (report: any) => {
           console.log(
-            `初始化进度: ${(report.progress * 100).toFixed(1)}% - ${
-              report.text || ""
+            `初始化进度: ${(report.progress * 100).toFixed(1)}% - ${report.text || ""
             }`
           );
         },

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/ModelsPage.module.css';
+import styles from '../../styles/ModelsPage.module.css';
 import * as tf from '@tensorflow/tfjs';
 
 interface ModelInfo {

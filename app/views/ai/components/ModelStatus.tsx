@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from '../../styles/ModelStatus.module.css';
+import styles from '../../../styles/ModelStatus.module.css';
 
 interface ModelStatusProps {
     isLoading: boolean;

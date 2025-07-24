@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../../styles/ChatInterface.module.css';
+import styles from '../../../styles/ChatInterface.module.css';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import { generateResponse, initLLMService } from '../../services/llmService';
+import { generateResponse, initLLMService } from '../../../services/llmService';
 
 export interface Message {
     id: string;

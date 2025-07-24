@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../../styles/ChatInterface.module.css';
+import styles from '../../../styles/ChatInterface.module.css';
 
 interface MessageInputProps {
     onSendMessage: (message: string) => void;
