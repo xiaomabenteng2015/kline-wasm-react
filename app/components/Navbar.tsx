@@ -53,6 +53,14 @@ export default function Navbar() {
                         Transformers聊天
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        href="/views/transformers-chat-with-selector"
+                        className={pathname === '/transformers-chat-with-selector' ? styles.active : ''}
+                    >
+                        模型选择聊天
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
