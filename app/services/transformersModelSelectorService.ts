@@ -10,7 +10,7 @@ async function initTransformersModule(loadType: "remote" | "local" = "remote") {
   }
 
   if (!pipeline || !env) {
-    const transformers = await import("@xenova/transformers");
+    const transformers = await import("@huggingface/transformers");
     pipeline = transformers.pipeline;
     env = transformers.env;
   }
@@ -68,19 +68,28 @@ export const AVAILABLE_MODELS = [
     loadType: "remote" as const,
   },
   {
-    id: "phi2",
-    name: "Phi-2 (远程)",
-    modelPath: "Xenova/phi-2",
-    size: "800MB",
-    description: "微软的高质量小模型，推理能力强",
-    conversationFormat: "simple",
-    loadType: "remote" as const,
+    id: "phi3-mini-remote",
+    name: "Phi-3 Mini 4K Instruct FP16 (远程)",
+    modelPath: "Xenova/Phi-3-mini-4k-instruct_fp16", // 使用官方远程路径
+    size: "约2GB",
+    description: "微软 Phi-3 Mini 模型，专为 Transformers.js 优化",
+    conversationFormat: "chatml",
+    loadType: "remote" as const, // 改为远程加载
+  },
+  {
+    id: "phi3-mini-local",
+    name: "Phi-3 Mini 4K Instruct FP16 (本地)",
+    modelPath: "phi3-mini-4k-instruct_fp16",
+    size: "",
+    description: "微软 Phi-3 Mini 模型，高质量指令跟随能力",
+    conversationFormat: "chatml", // 或根据模型要求调整
+    loadType: "local" as const,
   },
   {
     id: "qwen-local",
     name: "Qwen 1.5 0.5B Chat (本地)",
     modelPath: "qwen1.5-0.5b-chat",
-    size: "300MB",
+    size: "",
     description: "阿里巴巴开源的对话模型（需要本地文件）",
     conversationFormat: "chatml",
     loadType: "local" as const,
@@ -247,9 +256,8 @@ export async function generateModelSelectorResponse(
     console.error("Generation failed:", error);
 
     // 错误回退
-    const errorResponse = `抱歉，使用 ${
-      getCurrentModelInfo()?.name || "当前模型"
-    } 生成响应时出现了错误。`;
+    const errorResponse = `抱歉，使用 ${getCurrentModelInfo()?.name || "当前模型"
+      } 生成响应时出现了错误。`;
     for (let i = 0; i < errorResponse.length; i++) {
       await new Promise((resolve) => setTimeout(resolve, 50));
       onChunk(errorResponse[i]);
