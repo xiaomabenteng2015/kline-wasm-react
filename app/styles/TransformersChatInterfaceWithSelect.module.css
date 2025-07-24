@@ -11,31 +11,41 @@
   margin: 0 auto;
 }
 
-.topSection {
-  flex-shrink: 0;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  max-height: 60vh;
+/* 全屏容器 - 用于选择模型、加载、错误状态 */
+.fullScreenContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* 模型选择器容器 */
+.modelSelectorContainer {
+  width: 100%;
+  max-width: 900px;
+  max-height: 80%;
   overflow-y: auto;
 }
 
+/* 聊天容器 */
 .chatContainer {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow: hidden;
+  height: 100%;
 }
 
-.currentModel {
+/* 模型信息栏 */
+.modelInfoBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #e3f2fd;
-  padding: 12px 16px;
-  margin: 16px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e0e0e0;
   font-size: 14px;
   color: #1976d2;
+  flex-shrink: 0;
 }
 
 .changeModelButton {
@@ -53,65 +63,7 @@
   background: #1565c0;
 }
 
-.errorActions {
-  display: flex;
-  justify-content: center;
-  padding: 16px;
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
-  border-radius: 8px;
-  margin: 16px;
-}
-
-.reselectButton {
-  background: #f39c12;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.reselectButton:hover {
-  background: #e67e22;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.clearButton {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.clearButton:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.clearButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
+/* 消息容器 */
 .messagesContainer {
   flex: 1;
   overflow-y: auto;
@@ -119,23 +71,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-height: 300px;
-}
-
-.emptyState {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
-  color: #666;
-}
-
-.hint {
-  font-size: 0.9rem;
-  color: #999;
-  margin-top: 10px;
 }
 
 /* 消息包装器 */
@@ -211,18 +146,23 @@
   word-wrap: break-word;
 }
 
+/* 时间戳样式 */
 .messageTime {
-  font-size: 0.75rem;
-  opacity: 0.7;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
   margin-top: 8px;
   text-align: right;
+}
+
+.assistant .messageTime {
+  color: #999;
 }
 
 /* 等待动效 */
 .typingIndicator {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 10px 0;
 }
 
@@ -264,78 +204,28 @@
   }
 }
 
-.inputContainer {
-  padding: 20px;
-  background: #f8f9fa;
-  border-top: 1px solid #e0e0e0;
-}
-
-.inputWrapper {
+/* 错误操作区域 */
+.errorActions {
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.messageInput {
-  flex: 1;
-  min-height: 44px;
-  max-height: 120px;
-  padding: 12px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 22px;
-  resize: none;
-  font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.4;
-  transition: border-color 0.3s ease;
-  background: white;
-}
-
-.messageInput:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.messageInput:disabled {
-  background: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.sendButton {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
+  padding: 20px;
+  margin-top: 20px;
 }
 
-.sendButton:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+.reselectButton {
+  background: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.sendButton:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.sendIcon,
-.sendingIcon {
-  font-size: 1.2rem;
-}
-
-.sendingIcon {
-  animation: spin 1s linear infinite;
+.reselectButton:hover {
+  background: #e67e22;
 }
 
 @keyframes fadeIn {
@@ -349,76 +239,83 @@
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* 输入容器 - 使用正常文档流，不用绝对定位 */
+.inputContainer {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
-  .container {
-    height: 80vh;
-    width: calc(100vw - 20px);
-    margin: 10px;
-    border-radius: 15px;
-  }
+.inputWrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto;
+}
 
-  .header {
-    padding: 15px 20px;
-  }
-
-  .header h2 {
-    font-size: 1.3rem;
-  }
-
-  .messageWrapper {
-    max-width: 90%;
-  }
-
-  .message {
+.messageInput {
+    flex: 1;
+    min-height: 44px;
+    max-height: 120px;
     padding: 12px 16px;
-  }
-
-  .userAvatar,
-  .assistantAvatar {
-    width: 32px;
-    height: 32px;
+    border: 2px solid #e0e0e0;
+    border-radius: 22px;
+    resize: none;
+    font-family: inherit;
     font-size: 1rem;
-  }
+    line-height: 1.4;
+    transition: border-color 0.3s ease;
+    background: white;
+    outline: none;
+}
 
-  .inputContainer {
-    padding: 15px;
-  }
+.messageInput:focus {
+    border-color: #667eea;
+}
 
-  .messageInput {
-    font-size: 0.95rem;
-  }
+.messageInput:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
 
-  .topSection {
-    max-height: 70vh;
-  }
+.sendButton {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
 
-  .currentModel {
-    margin: 12px;
-    padding: 10px 12px;
-    font-size: 13px;
-  }
+.sendButton:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
 
-  .changeModelButton {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
+.sendButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
 
-  .errorActions {
-    margin: 12px;
-    padding: 12px;
-  }
+.sendIcon, .sendingIcon {
+    font-size: 1.2rem;
+}
 
-  .reselectButton {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
+.sendingIcon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

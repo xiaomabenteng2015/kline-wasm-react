@@ -2,239 +2,218 @@
 
 import { useState, useEffect, useRef } from 'react';
 import {
-    initModelSelectorService,
     generateModelSelectorResponse,
     isModelSelectorServiceReady,
-    isModelSelectorServiceLoading,
-    getCurrentModelName,
     getCurrentModelInfo,
     AVAILABLE_MODELS
 } from '../../../services/transformersModelSelectorService';
-import ModelSelector from './ModelSelector';
-import MessageInput from '../../ai/components/MessageInput';
-import TransformersModelStatus from '../../transformers-chat/components/TransformersModelStatus';
-import ModelUrlDebugger from '../../../components/ModelUrlDebugger';
 import styles from '../../../styles/TransformersChatInterfaceWithSelect.module.css';
 
+// Message 接口
 interface Message {
+    id: string;
     role: 'user' | 'assistant';
     content: string;
+    timestamp: Date;
+    isTyping?: boolean;
 }
 
 export default function TransformersChatInterfaceWithSelector() {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [loadingDuration, setLoadingDuration] = useState(0);
-    const [error, setError] = useState<string | null>(null);
-    const [selectedModelId, setSelectedModelId] = useState<string>('');
-    const [modelInitialized, setModelInitialized] = useState(false);
-
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const loadingStartTime = useRef<number>(0);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    // 滚动到最新消息 - 只在模型已初始化且有消息时滚动
-    useEffect(() => {
-        // 只有在模型已初始化并且有消息时才滚动
-        if (modelInitialized && messages.length > 0) {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [messages, modelInitialized]);
-
-    // 检查模型状态
+    // 检查模型是否就绪
     const isModelReady = isModelSelectorServiceReady();
-    const isModelLoading = isModelSelectorServiceLoading();
 
-    // 处理模型选择和加载
-    const handleModelSelect = async (modelId: string) => {
-        try {
-            setError(null);
-            setProgress(0);
-            setLoadingDuration(0);
-            loadingStartTime.current = Date.now();
-            setSelectedModelId(modelId);
-            // 开始加载过程，但还没有初始化完成
-            setModelInitialized(false);
-
-            const selectedModel = AVAILABLE_MODELS.find(model => model.id === modelId);
-
-            // 添加系统消息
+    // 初始化欢迎消息
+    useEffect(() => {
+        if (isModelReady && messages.length === 0) {
+            const selectedModel = getCurrentModelInfo();
             setMessages([{
+                id: Date.now().toString(),
                 role: 'assistant',
-                content: `正在加载 ${selectedModel?.name} 模型，请稍候...`
-            }]);
-
-            await initModelSelectorService(modelId, (progressValue: number) => {
-                setProgress(progressValue);
-                setLoadingDuration(Date.now() - loadingStartTime.current);
-            });
-
-            // 只有在模型真正加载完成后才设置为已初始化
-            if (isModelSelectorServiceReady()) {
-                setModelInitialized(true);
-
-                // 更新系统消息
-                setMessages([{
-                    role: 'assistant',
-                    content: `${selectedModel?.name} 模型加载完成！您现在可以开始对话了。`
-                }]);
-            } else {
-                throw new Error('模型加载完成但服务未就绪');
-            }
-
-        } catch (err) {
-            console.error('模型加载失败:', err);
-            setError(err instanceof Error ? err.message : '模型加载失败');
-            setModelInitialized(false);
-            setMessages([{
-                role: 'assistant',
-                content: '模型加载失败，请重试或选择其他模型。'
+                content: `${selectedModel?.name} 模型已准备就绪！您现在可以开始对话了。`,
+                timestamp: new Date()
             }]);
         }
-    };
+    }, [isModelReady, messages.length]);
 
-    // 处理重试
-    const handleRetry = () => {
-        if (selectedModelId) {
-            setError(null);
-            setProgress(0);
-            setLoadingDuration(0);
-            handleModelSelect(selectedModelId);
+    // 滚动到底部
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    // 自动调整文本框高度
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
         }
-    };
-
-    // 处理重新选择模型
-    const handleReselect = () => {
-        setSelectedModelId('');
-        setModelInitialized(false);
-        setMessages([]);
-        setError(null);
-        setProgress(0);
-        setLoadingDuration(0);
-        // 滚动到页面顶部，确保模型选择器可见
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    }, [input]);
 
     // 发送消息
-    const handleSendMessage = async (message: string) => {
-        if (!isModelReady || isGenerating) return;
+    const handleSendMessage = async () => {
+        if (!input.trim() || !isModelReady || isGenerating) return;
 
-        const userMessage: Message = { role: 'user', content: message };
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            role: 'user',
+            content: input.trim(),
+            timestamp: new Date()
+        };
+    
+        // 立即显示用户消息并清空输入框
         setMessages(prev => [...prev, userMessage]);
-
-        // 创建助手消息占位符
-        const assistantMessage: Message = { role: 'assistant', content: '' };
-        setMessages(prev => [...prev, assistantMessage]);
-
+        setInput('');
         setIsGenerating(true);
-
-        try {
-            let responseContent = '';
-
-            await generateModelSelectorResponse(
-                message,
-                messages,
+    
+        // 重置文本框高度
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
+    
+        // 准备历史消息
+        const history = [...messages, userMessage].map(msg => ({
+            role: msg.role,
+            content: msg.content
+        }));
+    
+        // 延迟显示AI等待气泡
+        setTimeout(() => {
+            const assistantMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: '',
+                timestamp: new Date(),
+                isTyping: true
+            };
+    
+            setMessages(prev => [...prev, assistantMessage]);
+    
+            // 开始生成AI回复
+            generateModelSelectorResponse(
+                userMessage.content,
+                history.slice(0, -1),
                 (chunk: string) => {
-                    responseContent += chunk;
-                    setMessages(prev => [
-                        ...prev.slice(0, -1),
-                        { ...prev[prev.length - 1], content: responseContent }
-                    ]);
+                    setMessages(prev =>
+                        prev.map(msg =>
+                            msg.id === assistantMessage.id
+                                ? { 
+                                    ...msg, 
+                                    content: msg.content + chunk, 
+                                    isTyping: false,
+                                    timestamp: new Date()
+                                }
+                                : msg
+                        )
+                    );
                 }
-            );
-        } catch (err) {
-            console.error('生成响应失败:', err);
-            setMessages(prev => [
-                ...prev.slice(0, -1),
-                { ...prev[prev.length - 1], content: '抱歉，生成响应时出现错误。' }
-            ]);
-        } finally {
-            setIsGenerating(false);
+            ).catch(error => {
+                console.error('Error generating response:', error);
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantMessage.id
+                            ? { 
+                                ...msg, 
+                                content: '抱歉，生成回复时出现错误。', 
+                                isTyping: false,
+                                timestamp: new Date()
+                            }
+                            : msg
+                    )
+                );
+            }).finally(() => {
+                setIsGenerating(false);
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantMessage.id
+                            ? { ...msg, timestamp: new Date() }
+                            : msg
+                    )
+                );
+            });
+        }, 500);
+    };
+
+    // 处理键盘事件
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
         }
     };
 
     return (
-        <div className={styles.container}>
-            {/* 固定在顶部的区域 */}
-            <div className={styles.topSection}>
-                {/* 模型选择器 - 在未选择模型时显示 */}
-                {!selectedModelId && (
-                    <>
-                        <ModelSelector
-                            onModelSelect={handleModelSelect}
-                            disabled={isModelLoading}
-                            selectedModelId={selectedModelId}
-                        />
-                        <ModelUrlDebugger />
-                    </>
-                )}
-
-                {/* 模型状态 - 在加载过程中、加载完成或出错时显示 */}
-                {selectedModelId && (isModelLoading || isModelReady || error) && (
-                    <div>
-                        <TransformersModelStatus
-                            progress={progress}
-                            loadingDuration={loadingDuration}
-                            isModelReady={isModelReady}
-                            error={error}
-                            onRetry={handleRetry}
-                        />
-
-                        {/* 在出错时显示重新选择按钮 */}
-                        {error && (
-                            <div className={styles.errorActions}>
-                                <button
-                                    className={styles.reselectButton}
-                                    onClick={handleReselect}
-                                >
-                                    重新选择模型
-                                </button>
+        <div className={styles.chatContainer}>
+            {/* 消息区域 */}
+            <div className={styles.messagesContainer}>
+                {messages.map((message) => (
+                    <div
+                        key={message.id}
+                        className={`${styles.messageWrapper} ${styles[message.role + 'Wrapper']}`}
+                    >
+                        {/* 头像 */}
+                        <div className={styles.avatar}>
+                            {message.role === 'user' ? (
+                                <div className={styles.userAvatar}>👤</div>
+                            ) : (
+                                <div className={styles.assistantAvatar}>🤖</div>
+                            )}
+                        </div>
+                        
+                        {/* 消息气泡 */}
+                        <div className={`${styles.message} ${styles[message.role]}`}>
+                            <div className={styles.messageContent}>
+                                {message.isTyping && message.content === '' ? (
+                                    <div className={styles.typingIndicator}>
+                                        <div className={styles.typingDots}>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    message.content
+                                )}
                             </div>
-                        )}
+                            <div className={styles.messageTime}>
+                                {message.timestamp.toLocaleTimeString()}
+                            </div>
+                        </div>
                     </div>
-                )}
-
-                {/* 当前模型信息 - 在模型已加载时显示 */}
-                {isModelReady && modelInitialized && (
-                    <div className={styles.currentModel}>
-                        <span>当前模型: {getCurrentModelInfo()?.name}</span>
-                        <button
-                            className={styles.changeModelButton}
-                            onClick={handleReselect}
-                        >
-                            更换模型
-                        </button>
-                    </div>
-                )}
+                ))}
+                <div ref={messagesEndRef} />
             </div>
 
-            {/* 聊天界面 - 在有消息时显示（包括加载消息） */}
-            {messages.length > 0 && (
-                <div className={styles.chatContainer}>
-                    <div className={styles.messagesContainer}>
-                        {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.message} ${message.role === 'user' ? styles.userMessage : styles.assistantMessage
-                                    }`}
-                            >
-                                <div className={styles.messageContent}>
-                                    {message.content}
-                                </div>
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-
-                    {/* 输入框 - 只在模型准备好时显示 */}
-                    {isModelReady && modelInitialized && (
-                        <MessageInput
-                            onSendMessage={handleSendMessage}
-                            disabled={isGenerating}
-                        />
-                    )}
+            {/* 输入区域 - 直接复用 TransformersChatInterface 的实现 */}
+            <div className={styles.inputContainer}>
+                <div className={styles.inputWrapper}>
+                    <textarea
+                        ref={textareaRef}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="输入您的消息... (Enter 发送，Shift+Enter 换行)"
+                        className={styles.messageInput}
+                        disabled={isGenerating}
+                        rows={1}
+                    />
+                    <button
+                        onClick={handleSendMessage}
+                        disabled={!input.trim() || isGenerating}
+                        className={styles.sendButton}
+                    >
+                        {isGenerating ? (
+                            <span className={styles.sendingIcon}>⏳</span>
+                        ) : (
+                            <span className={styles.sendIcon}>➤</span>
+                        )}
+                    </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 }
