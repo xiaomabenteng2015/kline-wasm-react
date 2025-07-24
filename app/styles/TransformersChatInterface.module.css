@@ -50,7 +50,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     min-height: 300px;
 }
 
@@ -70,23 +70,67 @@
     margin-top: 10px;
 }
 
-.message {
+/* 消息包装器 */
+.messageWrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
     max-width: 80%;
-    padding: 15px 20px;
-    border-radius: 18px;
-    position: relative;
     animation: fadeIn 0.3s ease-out;
 }
 
-.user {
+.userWrapper {
     align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.assistantWrapper {
+    align-self: flex-start;
+    flex-direction: row;
+}
+
+/* 头像样式 */
+.avatar {
+    flex-shrink: 0;
+    margin-bottom: 20px;
+}
+
+.userAvatar, .assistantAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.userAvatar {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.assistantAvatar {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+}
+
+/* 消息气泡 */
+.message {
+    padding: 15px 20px;
+    border-radius: 18px;
+    position: relative;
+    flex: 1;
+}
+
+.user {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border-bottom-right-radius: 5px;
 }
 
 .assistant {
-    align-self: flex-start;
     background: #f5f5f5;
     color: #333;
     border-bottom-left-radius: 5px;
@@ -103,6 +147,50 @@
     opacity: 0.7;
     margin-top: 8px;
     text-align: right;
+}
+
+/* 等待动效 */
+.typingIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.typingDots {
+    display: flex;
+    gap: 4px;
+}
+
+.typingDots span {
+    width: 8px;
+    height: 8px;
+    background-color: #667eea;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typingDots span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typingDots span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+.typingDots span:nth-child(3) {
+    animation-delay: 0s;
+}
+
+@keyframes typingBounce {
+    0%, 80%, 100% {
+        transform: scale(0.8) translateY(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.2) translateY(-10px);
+        opacity: 1;
+    }
 }
 
 .inputContainer {
@@ -194,47 +282,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* 新增：打字指示器样式 */
-.typingIndicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #666;
-    font-style: italic;
-}
-
-.typingDots {
-    display: flex;
-    gap: 2px;
-}
-
-.typingDots span {
-    width: 4px;
-    height: 4px;
-    background-color: #666;
-    border-radius: 50%;
-    animation: typingAnimation 1.4s infinite ease-in-out;
-}
-
-.typingDots span:nth-child(1) {
-    animation-delay: -0.32s;
-}
-
-.typingDots span:nth-child(2) {
-    animation-delay: -0.16s;
-}
-
-@keyframes typingAnimation {
-    0%, 80%, 100% {
-        transform: scale(0.8);
-        opacity: 0.5;
-    }
-    40% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
 @media (max-width: 768px) {
     .container {
         height: 80vh;
@@ -251,9 +298,18 @@
         font-size: 1.3rem;
     }
     
-    .message {
+    .messageWrapper {
         max-width: 90%;
+    }
+    
+    .message {
         padding: 12px 16px;
+    }
+    
+    .userAvatar, .assistantAvatar {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
     }
     
     .inputContainer {

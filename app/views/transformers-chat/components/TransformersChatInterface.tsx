@@ -9,7 +9,7 @@ interface Message {
     role: 'user' | 'assistant';
     content: string;
     timestamp: Date;
-    isTyping?: boolean; // 新增：标识是否正在输入状态
+    isTyping?: boolean;
 }
 
 export default function TransformersChatInterface() {
@@ -36,39 +36,44 @@ export default function TransformersChatInterface() {
             content: input.trim(),
             timestamp: new Date()
         };
-
+    
         // 立即显示用户消息
         setMessages(prev => [...prev, userMessage]);
         setInput('');
         setIsGenerating(true);
-
-        // 准备历史消息（包含刚发送的用户消息）
+    
+        // 准备历史消息
         const history = [...messages, userMessage].map(msg => ({
             role: msg.role,
             content: msg.content
         }));
-
-        // 稍微延迟后创建AI消息，让用户先看到自己的消息
+    
+        // 延迟显示AI等待气泡
         setTimeout(() => {
             const assistantMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
                 content: '',
-                timestamp: new Date(),
-                isTyping: true // 标记为正在输入状态
+                timestamp: new Date(), // 这里先设置一个临时时间
+                isTyping: true
             };
-
+    
             setMessages(prev => [...prev, assistantMessage]);
-
+    
             // 开始生成AI回复
             generateTransformersResponse(
                 userMessage.content,
-                history.slice(0, -1), // 历史消息不包含当前用户消息
+                history.slice(0, -1),
                 (chunk: string) => {
                     setMessages(prev =>
                         prev.map(msg =>
                             msg.id === assistantMessage.id
-                                ? { ...msg, content: msg.content + chunk, isTyping: false }
+                                ? { 
+                                    ...msg, 
+                                    content: msg.content + chunk, 
+                                    isTyping: false,
+                                    timestamp: new Date() // 每次更新内容时更新时间戳
+                                }
                                 : msg
                         )
                     );
@@ -78,14 +83,27 @@ export default function TransformersChatInterface() {
                 setMessages(prev =>
                     prev.map(msg =>
                         msg.id === assistantMessage.id
-                            ? { ...msg, content: '抱歉，生成回复时出现错误。', isTyping: false }
+                            ? { 
+                                ...msg, 
+                                content: '抱歉，生成回复时出现错误。', 
+                                isTyping: false,
+                                timestamp: new Date() // 错误时也更新时间戳
+                            }
                             : msg
                     )
                 );
             }).finally(() => {
                 setIsGenerating(false);
+                // 最终完成时再次更新时间戳
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantMessage.id
+                            ? { ...msg, timestamp: new Date() }
+                            : msg
+                    )
+                );
             });
-        }, 300); // 300ms延迟，让用户先看到自己的消息
+        }, 500);
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -122,24 +140,35 @@ export default function TransformersChatInterface() {
                     messages.map((message) => (
                         <div
                             key={message.id}
-                            className={`${styles.message} ${styles[message.role]}`}
+                            className={`${styles.messageWrapper} ${styles[message.role + 'Wrapper']}`}
                         >
-                            <div className={styles.messageContent}>
-                                {message.isTyping && message.content === '' ? (
-                                    <div className={styles.typingIndicator}>
-                                        <span>正在思考</span>
-                                        <div className={styles.typingDots}>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>
-                                    </div>
+                            {/* 头像 */}
+                            <div className={styles.avatar}>
+                                {message.role === 'user' ? (
+                                    <div className={styles.userAvatar}>👤</div>
                                 ) : (
-                                    message.content
+                                    <div className={styles.assistantAvatar}>🤖</div>
                                 )}
                             </div>
-                            <div className={styles.messageTime}>
-                                {message.timestamp.toLocaleTimeString()}
+                            
+                            {/* 消息气泡 */}
+                            <div className={`${styles.message} ${styles[message.role]}`}>
+                                <div className={styles.messageContent}>
+                                    {message.isTyping && message.content === '' ? (
+                                        <div className={styles.typingIndicator}>
+                                            <div className={styles.typingDots}>
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        message.content
+                                    )}
+                                </div>
+                                <div className={styles.messageTime}>
+                                    {message.timestamp.toLocaleTimeString()}
+                                </div>
                             </div>
                         </div>
                     ))
