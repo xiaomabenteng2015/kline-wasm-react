@@ -1,0 +1,183 @@
+.messageContainer {
+  display: flex;
+  margin-bottom: 1.5rem;
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.userMessage {
+  justify-content: flex-end;
+}
+
+.assistantMessage {
+  justify-content: flex-start;
+}
+
+.messageBubble {
+  max-width: 75%;
+  padding: 1.2rem 1.5rem;
+  border-radius: 20px;
+  position: relative;
+  word-wrap: break-word;
+  line-height: 1.6;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.userBubble {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-bottom-right-radius: 8px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.userBubble::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.userBubble:hover::before {
+  transform: translateX(100%);
+}
+
+.assistantBubble {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+  color: #1e293b;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-bottom-left-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.messageContent {
+  margin: 0;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.messageContent p {
+  margin: 0 0 0.8rem;
+}
+
+.messageContent p:last-child {
+  margin-bottom: 0;
+}
+
+.messageContent code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.userBubble .messageContent code {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.messageContent pre {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 0.8rem 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.userBubble .messageContent pre {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.messageContent pre code {
+  background: none;
+  padding: 0;
+}
+
+.messageTime {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 0.8rem;
+  text-align: right;
+  font-weight: 500;
+}
+
+.assistantBubble .messageTime {
+  text-align: left;
+}
+
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-style: italic;
+  opacity: 0.8;
+  color: #64748b;
+}
+
+.typingDots {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.typingDot {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite;
+}
+
+.typingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 60%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-12px) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .messageBubble {
+    max-width: 90%;
+    padding: 1rem 1.2rem;
+  }
+  
+  .messageContent {
+    font-size: 0.95rem;
+  }
+  
+  .messageTime {
+    font-size: 0.75rem;
+  }
+}

@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 移除 experimental.esmExternals 配置
-  // 移除复杂的 webpack 配置，因为 Turbopack 不支持
-  
   // 添加头部以支持 SharedArrayBuffer (WebLLM需要)
   async headers() {
     return [
@@ -21,6 +18,29 @@ const nextConfig = {
       },
     ];
   },
+  
+  // 添加 webpack 配置以支持 @xenova/transformers
+  webpack: (config, { isServer }) => {
+    // 处理 @xenova/transformers 的依赖
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      "fs": false,
+      "path": false,
+      "crypto": false,
+    };
+    
+    // 排除服务端渲染的问题模块
+    if (isServer) {
+      config.externals.push('@xenova/transformers');
+    }
+    
+    return config;
+  },
+  
+  // 实验性功能配置
+  experimental: {
+    esmExternals: 'loose'
+  }
 };
 
 module.exports = nextConfig;

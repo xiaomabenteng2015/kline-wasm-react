@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "dev:https": "node server.js",
     "build": "next build",
     "start": "next start",
@@ -11,9 +11,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mlc-ai/web-llm": "^0.3.0",
+    "@mlc-ai/web-llm": "^0.2.79",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-wasm": "^4.22.0",
+    "@xenova/transformers": "^2.17.2",
     "lightweight-charts": "^4.2.3",
     "next": "15.4.2",
     "onnxruntime-web": "^1.22.0",

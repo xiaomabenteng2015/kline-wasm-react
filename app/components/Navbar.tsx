@@ -45,6 +45,22 @@ export default function Navbar() {
                         AI助手
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        href="/onnx-chat"
+                        className={pathname === '/onnx-chat' ? styles.active : ''}
+                    >
+                        ONNX聊天
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/transformers-chat"
+                        className={pathname === '/transformers-chat' ? styles.active : ''}
+                    >
+                        Transformers聊天
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
