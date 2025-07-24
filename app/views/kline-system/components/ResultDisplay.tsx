@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import styles from '../styles/ResultDisplay.module.css';
-import { BinanceKline } from '../services/binanceService';
+import styles from '../../../styles/ResultDisplay.module.css';
+import { BinanceKline } from '../../../services/binanceService';
 
 interface ResultDisplayProps {
     klineData: BinanceKline[];

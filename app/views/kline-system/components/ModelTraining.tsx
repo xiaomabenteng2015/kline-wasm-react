@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { fetchHistoricalKlines, KlineInterval } from '../../services/binanceService';
-import styles from '../../styles/TrainPage.module.css';
+import { fetchHistoricalKlines, KlineInterval } from '../../../services/binanceService';
+import styles from '../../../styles/TrainPage.module.css';
 import * as tf from '@tensorflow/tfjs';
 
 export default function TrainPage() {

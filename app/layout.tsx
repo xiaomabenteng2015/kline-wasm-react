@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "K线数据分析 Demo",
-  description: "K线数据分析与推理演示应用",
+  title: "AI模型加载测试",
+  description: "AI模型加载演示应用",
 };
 
 export default function RootLayout({

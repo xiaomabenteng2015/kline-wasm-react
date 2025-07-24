@@ -1,132 +1,257 @@
 .container {
-  padding: 24px;
-  max-width: 1200px;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 0;
+  margin-bottom: 3rem;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.modulesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.moduleCard {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.moduleCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cardContent {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+}
+
+.cardContent.primary::before {
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+
+.cardContent.secondary::before {
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+
+.cardContent.accent::before {
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+
+.cardContent.info::before {
+  background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardIcon {
+  font-size: 2.5rem;
+  margin-right: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cardDescription {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.cardFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.featureTag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.actionText {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.actionArrow {
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.moduleCard:hover .actionArrow {
+  transform: translateX(4px);
+}
+
+.statsSection {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  margin-bottom: 4rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabel {
+  font-size: 1rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.quickStart {
+  text-align: center;
+}
+
+.quickStartTitle {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+}
+
+.quickStartSteps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 900px;
   margin: 0 auto;
 }
 
-.title {
-  margin-bottom: 24px;
-  color: var(--foreground);
-  text-align: center;
-}
-
-.controlsContainer {
+.step {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.dataSourceToggle {
-  display: flex;
-  align-items: center;
-}
-
-.dataSourceToggle input {
-  margin-right: 8px;
-}
-
-.intervalSelector {
-  display: flex;
-  align-items: center;
-}
-
-.intervalSelector label {
-  margin-right: 8px;
-}
-
-.intervalSelector select {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  min-width: 120px;
-}
-
-.symbolSelector {
-  display: flex;
-  align-items: center;
-}
-
-.symbolSelector label {
-  margin-right: 8px;
-}
-
-.symbolSelector select {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  min-width: 200px;
-}
-
-.autoAnalyzeToggle {
-  display: flex;
-  align-items: center;
-}
-
-.autoAnalyzeToggle input {
-  margin-right: 8px;
-}
-
-.analyzeButton {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-}
-
-.analyzeButton:hover {
-  background-color: #45a049;
-}
-
-.analyzeButton:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.loading {
   text-align: center;
-  padding: 40px;
-  font-size: 18px;
-  color: #666;
 }
 
-.error {
-  text-align: center;
-  padding: 20px;
-  color: #d32f2f;
-  background-color: #ffebee;
-  border-radius: 4px;
-  margin: 20px 0;
+.stepNumber {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #4f46e5, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
 }
 
-.retryButton {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+.stepContent h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
-.retryButton:hover {
-  background-color: #0b7dda;
+.stepContent p {
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  
+  .modulesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .quickStartSteps {
+    grid-template-columns: 1fr;
+  }
 }

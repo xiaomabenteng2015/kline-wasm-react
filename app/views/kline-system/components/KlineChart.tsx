@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, ColorType, IChartApi, ISeriesApi, LogicalRange } from 'lightweight-charts';
-import styles from '../styles/KlineChart.module.css';
-import { BinanceKline } from '../services/binanceService';
+import styles from '../../../styles/KlineChart.module.css';
+import { BinanceKline } from '../../../services/binanceService';
 
 interface KlineChartProps {
     data: BinanceKline[];

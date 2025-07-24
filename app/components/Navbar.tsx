@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <nav className={styles.navbar}>
             <div className={styles.logo}>
-                K线预测系统
+                AI模型加载测试
             </div>
             <ul className={styles.navLinks}>
                 <li>
@@ -23,18 +23,10 @@ export default function Navbar() {
                 </li>
                 <li>
                     <Link
-                        href="/views/train"
-                        className={pathname === '/views/train' ? styles.active : ''}
+                        href="/views/kline-system"
+                        className={pathname === '/views/kline-system' ? styles.active : ''}
                     >
-                        模型训练
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="/views/models"
-                        className={pathname === '/views/models' ? styles.active : ''}
-                    >
-                        模型管理
+                        K线推理模型
                     </Link>
                 </li>
                 <li>
@@ -42,7 +34,7 @@ export default function Navbar() {
                         href="/views/ai"
                         className={pathname === '/views/ai' ? styles.active : ''}
                     >
-                        AI助手
+                        WebLLM 聊天
                     </Link>
                 </li>
                 <li>
