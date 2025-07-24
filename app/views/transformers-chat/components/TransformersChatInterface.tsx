@@ -9,6 +9,7 @@ interface Message {
     role: 'user' | 'assistant';
     content: string;
     timestamp: Date;
+    isTyping?: boolean; // 新增：标识是否正在输入状态
 }
 
 export default function TransformersChatInterface() {
@@ -36,52 +37,55 @@ export default function TransformersChatInterface() {
             timestamp: new Date()
         };
 
+        // 立即显示用户消息
         setMessages(prev => [...prev, userMessage]);
         setInput('');
         setIsGenerating(true);
 
-        // 准备历史消息
-        const history = messages.map(msg => ({
+        // 准备历史消息（包含刚发送的用户消息）
+        const history = [...messages, userMessage].map(msg => ({
             role: msg.role,
             content: msg.content
         }));
 
-        // 创建助手消息
-        const assistantMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            role: 'assistant',
-            content: '',
-            timestamp: new Date()
-        };
+        // 稍微延迟后创建AI消息，让用户先看到自己的消息
+        setTimeout(() => {
+            const assistantMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: '',
+                timestamp: new Date(),
+                isTyping: true // 标记为正在输入状态
+            };
 
-        setMessages(prev => [...prev, assistantMessage]);
+            setMessages(prev => [...prev, assistantMessage]);
 
-        try {
-            await generateTransformersResponse(
+            // 开始生成AI回复
+            generateTransformersResponse(
                 userMessage.content,
-                history,
+                history.slice(0, -1), // 历史消息不包含当前用户消息
                 (chunk: string) => {
                     setMessages(prev =>
                         prev.map(msg =>
                             msg.id === assistantMessage.id
-                                ? { ...msg, content: msg.content + chunk }
+                                ? { ...msg, content: msg.content + chunk, isTyping: false }
                                 : msg
                         )
                     );
                 }
-            );
-        } catch (error) {
-            console.error('Error generating response:', error);
-            setMessages(prev =>
-                prev.map(msg =>
-                    msg.id === assistantMessage.id
-                        ? { ...msg, content: '抱歉，生成回复时出现错误。' }
-                        : msg
-                )
-            );
-        } finally {
-            setIsGenerating(false);
-        }
+            ).catch(error => {
+                console.error('Error generating response:', error);
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantMessage.id
+                            ? { ...msg, content: '抱歉，生成回复时出现错误。', isTyping: false }
+                            : msg
+                    )
+                );
+            }).finally(() => {
+                setIsGenerating(false);
+            });
+        }, 300); // 300ms延迟，让用户先看到自己的消息
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -121,7 +125,18 @@ export default function TransformersChatInterface() {
                             className={`${styles.message} ${styles[message.role]}`}
                         >
                             <div className={styles.messageContent}>
-                                {message.content}
+                                {message.isTyping && message.content === '' ? (
+                                    <div className={styles.typingIndicator}>
+                                        <span>正在思考</span>
+                                        <div className={styles.typingDots}>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    message.content
+                                )}
                             </div>
                             <div className={styles.messageTime}>
                                 {message.timestamp.toLocaleTimeString()}
