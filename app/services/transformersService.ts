@@ -44,16 +44,23 @@ export async function initTransformersService(onProgress?: (progress: number) =>
             'qwen1.5-0.5b-chat',
             {
                 progress_callback: (progress: any) => {
-                    const percentage = Math.round(progress.progress * 85) + 15;
+                    // 将进度映射到 5-95% 范围，为最终验证留出空间
+                    const percentage = Math.round(progress.progress * 90) + 5;
                     onProgress?.(percentage);
                     console.log(`Loading progress: ${percentage}%`);
                 }
             }
         );
 
-        isInitialized = true;
-        onProgress?.(100);
-        console.log('Transformers.js service initialized successfully');
+        // 验证模型是否真正可用
+        if (textGenerator) {
+            // 只有在这里才真正标记为初始化完成
+            isInitialized = true;
+            onProgress?.(10000);
+            console.log('Transformers.js service initialized successfully');
+        } else {
+            throw new Error('Model initialization failed: textGenerator is null');
+        }
 
     } catch (error) {
         console.error('Failed to initialize transformers.js:', error);
