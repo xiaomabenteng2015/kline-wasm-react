@@ -115,27 +115,30 @@ export default function KlineChart({ data, signal, prob }: KlineChartProps) {
 
         try {
             const lastKline = data[data.length - 1];
-            const markers = [];
+            const markers: any[] = []; // 明确指定类型
 
             if (signal === 'buy') {
                 markers.push({
-                    time: lastKline.time as any,
-                    position: 'belowBar',
+                    time: lastKline.time, // 移除 as any
+                    position: 'belowBar' as const, // 使用 const assertion
                     color: '#26a69a',
-                    shape: 'arrowUp',
-                    text: `买入 (${prob})`
+                    shape: 'arrowUp' as const, // 使用 const assertion
+                    text: `买入 (${(prob * 100).toFixed(1)}%)` // 格式化概率显示
                 });
             } else if (signal === 'sell') {
                 markers.push({
-                    time: lastKline.time as any,
-                    position: 'aboveBar',
+                    time: lastKline.time, // 移除 as any
+                    position: 'aboveBar' as const, // 使用 const assertion
                     color: '#ef5350',
-                    shape: 'arrowDown',
-                    text: `卖出 (${prob})`
+                    shape: 'arrowDown' as const, // 使用 const assertion
+                    text: `卖出 (${(prob * 100).toFixed(1)}%)` // 格式化概率显示
                 });
             }
 
-            seriesRef.current.setMarkers(markers);
+            // 添加类型检查
+            if (seriesRef.current && markers.length > 0) {
+                seriesRef.current.setMarkers(markers);
+            }
         } catch (error) {
             console.error('设置标记错误:', error);
         }
