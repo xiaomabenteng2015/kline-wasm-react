@@ -23,7 +23,7 @@ export default function TransformersChatWithSelectorPage() {
     const [error, setError] = useState<string | null>(null);
     const [selectedModelId, setSelectedModelId] = useState<string>('');
     const [interfaceState, setInterfaceState] = useState<InterfaceState>('selecting');
-    
+
     const loadingStartTime = useRef<number>(0);
 
     // 检查模型状态
@@ -55,7 +55,8 @@ export default function TransformersChatWithSelectorPage() {
 
             await initModelSelectorService(modelId, (progressValue: number) => {
                 setProgress(progressValue);
-                setLoadingDuration(Date.now() - loadingStartTime.current);
+                const elapsed = Math.floor((Date.now() - loadingStartTime.current) / 1000);
+                setLoadingDuration(elapsed);
             });
 
             if (isModelSelectorServiceReady()) {
