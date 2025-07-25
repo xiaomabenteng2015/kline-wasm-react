@@ -51,15 +51,16 @@ export default function ModelSelector({ onModelSelect, disabled, selectedModelId
                                 className={styles.radio}
                             />
                             <div className={styles.modelInfo}>
-                                <h4 className={styles.modelName}>{model.name}</h4>
-                                <div className={styles.modelTags}>
+                                <div className={styles.modelNameRow}>
+                                    <h4 className={styles.modelName}>{model.name}</h4>
                                     <span className={`${styles.loadTypeTag} ${styles[model.loadType]}`}>
                                         {model.loadType === 'remote' ? '远程' : '本地'}
                                     </span>
                                 </div>
+                                <p className={styles.modelDescription}>{model.description}</p>
                             </div>
                         </div>
-                        <p className={styles.modelDescription}>{model.description}</p>
+
                     </div>
                 ))}
             </div>
