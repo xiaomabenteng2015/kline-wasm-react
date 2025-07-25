@@ -12,7 +12,7 @@ import TransformersChatInterfaceWithSelector from './components/TransformersChat
 import ModelSelector from './components/ModelSelector';
 import TransformersModelStatus from '../transformers-chat/components/TransformersModelStatus';
 import ModelUrlDebugger from '../../components/ModelUrlDebugger';
-import styles from '../../styles/AIPage.module.css';
+import styles from '../../styles/TransformersChatPageWithSelector.module.css';
 
 // 定义界面状态枚举
 type InterfaceState = 'selecting' | 'loading' | 'ready' | 'error';
@@ -93,63 +93,63 @@ export default function TransformersChatWithSelectorPage() {
         switch (interfaceState) {
             case 'selecting':
                 return (
-                    <div className={styles.container}>
-                        <h1 className={styles.title}>Transformers.js 聊天助手 (模型选择版)</h1>
-                        <div className={styles.content}>
-                            <ModelSelector
-                                onModelSelect={handleModelSelect}
-                                disabled={false}
-                                selectedModelId={selectedModelId}
-                            />
-                            <ModelUrlDebugger />
-                        </div>
-                        <div className={styles.disclaimer}>
-                            注意：模型在浏览器中本地运行，首次加载可能需要一些时间。不同模型的对话能力和响应质量会有所差异。
+                    <div className={styles.pageContainer}>
+                        <div className={styles.backgroundDecoration}></div>
+                        <div className={styles.contentWrapper}>
+                            <h1 className={styles.pageTitle}>🤖 多模型 AI 聊天助手</h1>
+                            <div className={styles.selectorCard}>
+                                <ModelSelector
+                                    onModelSelect={handleModelSelect}
+                                    disabled={false}
+                                    selectedModelId={selectedModelId}
+                                />
+                                <ModelUrlDebugger />
+                            </div>
+                            <div className={styles.disclaimer}>
+                                💡 模型在浏览器中本地运行，首次加载可能需要一些时间
+                            </div>
                         </div>
                     </div>
                 );
 
             case 'loading':
                 return (
-                    <div className={styles.container}>
-                        <h1 className={styles.title}>正在加载模型...</h1>
-                        <div className={styles.content}>
-                            <TransformersModelStatus
-                                progress={progress}
-                                loadingDuration={loadingDuration}
-                                isModelReady={false}
-                                error={null}
-                                onRetry={handleRetry}
-                            />
+                    <div className={styles.pageContainer}>
+                        <div className={styles.backgroundDecoration}></div>
+                        <div className={styles.contentWrapper}>
+                            <h1 className={styles.pageTitle}>⏳ 正在加载模型...</h1>
+                            <div className={styles.loadingCard}>
+                                <TransformersModelStatus
+                                    progress={progress}
+                                    loadingDuration={loadingDuration}
+                                    isModelReady={false}
+                                    error={null}
+                                    onRetry={handleRetry}
+                                />
+                            </div>
                         </div>
                     </div>
                 );
 
             case 'error':
                 return (
-                    <div className={styles.container}>
-                        <h1 className={styles.title}>模型加载失败</h1>
-                        <div className={styles.content}>
-                            <TransformersModelStatus
-                                progress={progress}
-                                loadingDuration={loadingDuration}
-                                isModelReady={false}
-                                error={error}
-                                onRetry={handleRetry}
-                            />
-                            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                    <div className={styles.pageContainer}>
+                        <div className={styles.backgroundDecoration}></div>
+                        <div className={styles.contentWrapper}>
+                            <h1 className={styles.pageTitle}>❌ 模型加载失败</h1>
+                            <div className={styles.errorCard}>
+                                <TransformersModelStatus
+                                    progress={progress}
+                                    loadingDuration={loadingDuration}
+                                    isModelReady={false}
+                                    error={error}
+                                    onRetry={handleRetry}
+                                />
                                 <button
                                     onClick={handleReselect}
-                                    style={{
-                                        padding: '12px 24px',
-                                        backgroundColor: '#3b82f6',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        cursor: 'pointer'
-                                    }}
+                                    className={styles.reselectButton}
                                 >
-                                    重新选择模型
+                                    🔄 重新选择模型
                                 </button>
                             </div>
                         </div>
@@ -158,33 +158,23 @@ export default function TransformersChatWithSelectorPage() {
 
             case 'ready':
                 return (
-                    <div className={styles.container}>
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: '20px',
-                            padding: '0 20px'
-                        }}>
-                            <h1 className={styles.title} style={{ margin: 0 }}>
-                                当前模型: {getCurrentModelInfo()?.name}
-                            </h1>
+                    <div className={styles.chatPageContainer}>
+                        <div className={styles.chatHeader}>
+                            <div className={styles.modelInfo}>
+                                <span className={styles.modelIcon}>🤖</span>
+                                <span className={styles.modelName}>
+                                    {getCurrentModelInfo()?.name}
+                                </span>
+                                <span className={styles.statusBadge}>已连接</span>
+                            </div>
                             <button
                                 onClick={handleReselect}
-                                style={{
-                                    padding: '8px 16px',
-                                    backgroundColor: '#6b7280',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '6px',
-                                    cursor: 'pointer',
-                                    fontSize: '14px'
-                                }}
+                                className={styles.changeModelButton}
                             >
-                                更换模型
+                                🔄 更换模型
                             </button>
                         </div>
-                        <div className={styles.content}>
+                        <div className={styles.chatContent}>
                             <TransformersChatInterfaceWithSelector />
                         </div>
                     </div>

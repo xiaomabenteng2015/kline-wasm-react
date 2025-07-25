@@ -44,7 +44,6 @@ export const AVAILABLE_MODELS = [
     id: "distilgpt2",
     name: "DistilGPT-2 (远程)",
     modelPath: "Xenova/distilgpt2",
-    size: "",
     description: "超轻量级模型，从 Hugging Face 远程加载",
     conversationFormat: "simple",
     loadType: "remote" as const,
@@ -53,7 +52,6 @@ export const AVAILABLE_MODELS = [
     id: "gpt2",
     name: "GPT-2 (远程)",
     modelPath: "Xenova/gpt2",
-    size: "",
     description: "经典GPT-2模型，从 Hugging Face 远程加载",
     conversationFormat: "simple",
     loadType: "remote" as const,
@@ -62,7 +60,6 @@ export const AVAILABLE_MODELS = [
     id: "tinyllama",
     name: "TinyLlama Chat (远程)",
     modelPath: "Xenova/TinyLlama-1.1B-Chat-v1.0",
-    size: "",
     description: "小型LLaMA变体，从 Hugging Face 远程加载",
     conversationFormat: "chatml",
     loadType: "remote" as const,
@@ -71,7 +68,6 @@ export const AVAILABLE_MODELS = [
     id: "phi3-mini-remote",
     name: "Phi-3 Mini 4K Instruct FP16 (远程)",
     modelPath: "Xenova/Phi-3-mini-4k-instruct_fp16", // 使用官方远程路径
-    size: "约2GB",
     description: "微软 Phi-3 Mini 模型，专为 Transformers.js 优化",
     conversationFormat: "chatml",
     loadType: "remote" as const, // 改为远程加载
@@ -80,7 +76,6 @@ export const AVAILABLE_MODELS = [
     id: "phi3-mini-local",
     name: "Phi-3 Mini 4K Instruct FP16 (本地)",
     modelPath: "phi3-mini-4k-instruct_fp16",
-    size: "",
     description: "微软 Phi-3 Mini 模型，高质量指令跟随能力",
     conversationFormat: "chatml", // 或根据模型要求调整
     loadType: "local" as const,
@@ -89,7 +84,6 @@ export const AVAILABLE_MODELS = [
     id: "qwen-local",
     name: "Qwen 1.5 0.5B Chat (本地)",
     modelPath: "qwen1.5-0.5b-chat",
-    size: "",
     description: "阿里巴巴开源的对话模型（需要本地文件）",
     conversationFormat: "chatml",
     loadType: "local" as const,

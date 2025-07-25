@@ -53,7 +53,6 @@ export default function ModelSelector({ onModelSelect, disabled, selectedModelId
                             <div className={styles.modelInfo}>
                                 <h4 className={styles.modelName}>{model.name}</h4>
                                 <div className={styles.modelTags}>
-                                    {model.size && <span className={styles.sizeTag}>{model.size}</span>}
                                     <span className={`${styles.loadTypeTag} ${styles[model.loadType]}`}>
                                         {model.loadType === 'remote' ? '远程' : '本地'}
                                     </span>
