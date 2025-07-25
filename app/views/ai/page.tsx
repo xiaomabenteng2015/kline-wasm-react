@@ -89,7 +89,7 @@ export default function AIPage() {
         return (
             <ErrorBoundary>
                 <div className={styles.container}>
-                    <h1 className={styles.title}>AI 助手</h1>
+                    <h1 className={styles.title}>WebLLM 聊天</h1>
                     <div className={styles.content}>
                         <div style={{ textAlign: 'center', padding: '2rem' }}>
                             <p>正在初始化AI服务...</p>
@@ -103,7 +103,7 @@ export default function AIPage() {
     return (
         <ErrorBoundary>
             <div className={styles.container}>
-                <h1 className={styles.title}>AI 助手</h1>
+                <h1 className={styles.title}>WebLLM 聊天</h1>
 
                 <div className={styles.content}>
                     {!modelReady && (

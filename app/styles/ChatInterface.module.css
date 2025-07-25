@@ -1,8 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
+}
+
 .chatContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 500px;
+  min-height: 600px;
 }
 
 .messageList {
@@ -53,6 +60,7 @@
   background-color: white;
   border-top: 1px solid #e0e0e0;
   border-radius: 0 0 8px 8px;
+  flex-shrink: 0; /* 确保输入框不会被压缩 */
 }
 
 .messageInput {
@@ -120,10 +128,12 @@
 }
 
 @keyframes typingAnimation {
-  0%, 80%, 100% { 
+  0%,
+  80%,
+  100% {
     transform: scale(0);
-  } 
-  40% { 
-    transform: scale(1.0);
+  }
+  40% {
+    transform: scale(1);
   }
 }
