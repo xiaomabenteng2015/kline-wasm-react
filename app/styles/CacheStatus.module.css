@@ -1,0 +1,332 @@
+.cacheStatus {
+  padding: 16px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  overflow: hidden;
+}
+
+.cacheStatus.loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  padding: 24px;
+}
+
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-top: 2px solid #4caf50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.statusSection {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.statusSection:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.statusSection h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.statusIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusIndicator.online {
+  background: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
+}
+
+.statusIndicator.offline {
+  background: #f44336;
+  box-shadow: 0 0 4px rgba(244, 67, 54, 0.5);
+}
+
+.serviceReady {
+  margin-left: auto;
+  font-size: 12px;
+  color: #4caf50;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+}
+
+.statLabel {
+  color: #666;
+  font-size: 12px;
+}
+
+.statValue {
+  font-weight: 600;
+  color: #333;
+}
+
+.currentModel {
+  padding: 8px 12px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #4caf50;
+}
+
+.modelName {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 优化的模型列表样式 */
+.modelsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-right: -4px;
+}
+
+.modelsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modelsList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.modelsList::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.modelsList::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modelItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.2s;
+}
+
+.modelItem:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modelInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.modelInfo .modelName {
+  font-weight: 500;
+  color: #333;
+  font-size: 13px;
+}
+
+.modelSize, .modelQuality {
+  font-size: 11px;
+  color: #666;
+}
+
+.modelQuality {
+  text-transform: capitalize;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  display: inline-block;
+  width: fit-content;
+}
+
+.preloadBtn {
+  padding: 6px 12px;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.preloadBtn:hover:not(:disabled) {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+.preloadBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.downloadProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progressLabel {
+  font-size: 11px;
+  color: #666;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 11px;
+  color: #333;
+  min-width: 35px;
+  text-align: right;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+  flex: 1;
+  min-width: 80px;
+}
+
+.clearBtn {
+  background: #ff6b6b;
+  color: white;
+}
+
+.clearBtn:hover:not(:disabled) {
+  background: #ff5252;
+  transform: translateY(-1px);
+}
+
+.exportBtn {
+  background: #4ecdc4;
+  color: white;
+}
+
+.exportBtn:hover:not(:disabled) {
+  background: #26a69a;
+  transform: translateY(-1px);
+}
+
+.refreshBtn {
+  background: #45b7d1;
+  color: white;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  background: #2196f3;
+  transform: translateY(-1px);
+}
+
+.actionBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modelsList {
+    max-height: 150px;
+  }
+  
+  .modelItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .preloadBtn {
+    align-self: flex-end;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+  }
+}

@@ -11,7 +11,7 @@ import {
 import TransformersChatInterfaceWithSelector from './components/TransformersChatInterfaceWithSelector';
 import ModelSelector from './components/ModelSelector';
 import TransformersModelStatus from '../transformers-chat/components/TransformersModelStatus';
-import ModelUrlDebugger from '../../components/ModelUrlDebugger';
+import ModelUrlDebugger from './components/ModelUrlDebugger';
 import styles from '../../styles/TransformersChatPageWithSelector.module.css';
 
 // 定义界面状态枚举

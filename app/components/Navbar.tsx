@@ -39,6 +39,14 @@ export default function Navbar() {
                 </li>
                 <li>
                     <Link
+                        href="/views/fast-chat"
+                        className={pathname === '/views/fast-chat' ? styles.active : ''}
+                    >
+                        🚀 快速聊天测试
+                    </Link>
+                </li>
+                <li>
+                    <Link
                         href="/views/onnx-chat"
                         className={pathname === '/views/onnx-chat' ? styles.active : ''}
                     >

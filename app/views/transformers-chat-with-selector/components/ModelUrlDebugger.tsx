@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AVAILABLE_MODELS, buildModelUrls } from '../services/transformersModelSelectorService';
+import { AVAILABLE_MODELS, buildModelUrls } from '../../../services/transformersModelSelectorService';
 
 export default function ModelUrlDebugger() {
     const [selectedModelId, setSelectedModelId] = useState('distilgpt2');

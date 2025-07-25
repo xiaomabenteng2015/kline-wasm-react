@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd70ecd5-08e6-4cd8-934e-2b61d6d6fe1d" name="Changes" comment="" />
+    <list default="true" id="dd70ecd5-08e6-4cd8-934e-2b61d6d6fe1d" name="Changes" comment="微调UI">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/ModelUrlDebugger.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/transformers-chat-with-selector/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/transformers-chat-with-selector/page.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,6 +97,7 @@
     <MESSAGE value="集成onnx 和 transformers" />
     <MESSAGE value="transform 可选多模型准备" />
     <MESSAGE value="transform 版本升级" />
-    <option name="LAST_COMMIT_MESSAGE" value="transform 版本升级" />
+    <MESSAGE value="微调UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="微调UI" />
   </component>
 </project>
